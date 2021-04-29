@@ -5,6 +5,10 @@ class Board {
         return elements.iterator()
     }
 
+    fun takeTurn(player: Player, move: Move) {
+        elements[move.row][move.column].setState(player.id)
+    }
+
     //    val elements = arrayOf(arrayOf(BoardElement(), BoardElement(), BoardElement()))
     val size = 3
     val row1 = List(size){

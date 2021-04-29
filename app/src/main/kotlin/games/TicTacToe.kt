@@ -14,4 +14,11 @@ fun main() {
     println(TicTacToe().greeting)
     val board = Board()
     TextDisplayer().display(board)
+    var player = Player("Lianne", 1)
+    board.takeTurn(player, Move(0, 1))
+    TextDisplayer().display(board)
+    var player2 = Player("Paul", 2)
+    board.takeTurn(player2, Move(0, 0))
+    TextDisplayer().display(board)
+
 }
