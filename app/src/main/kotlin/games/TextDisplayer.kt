@@ -3,8 +3,9 @@ package games
 class TextDisplayer {
     val rowName = arrayOf("a", "b", "c")
     fun display(board:Board){
+        print("  ")
         for (i in 1..3) {
-            print("  " + i + "  ")
+            print("  " + i + " ")
         }
         println()
         for ((i, row) in board.getElementIterator().withIndex()) {
