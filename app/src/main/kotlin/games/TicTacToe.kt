@@ -6,7 +6,7 @@ package games
 class TicTacToe {
     val greeting: String
         get() {
-            return "Hello World!"
+            return "Welcome to the Tic Tac Toe game!"
         }
 }
 
@@ -15,10 +15,11 @@ fun main() {
     val board = Board()
     TextDisplayer().display(board)
     var player = Player("Lianne", 1)
-    board.takeTurn(player, Move(0, 1))
+    var move = TextInputController().getMoveFromPlayer(player)
+    board.takeTurn(player, move)
     TextDisplayer().display(board)
     var player2 = Player("Paul", 2)
-    board.takeTurn(player2, Move(0, 0))
+    move = TextInputController().getMoveFromPlayer(player2)
+    board.takeTurn(player2, move)
     TextDisplayer().display(board)
-
 }

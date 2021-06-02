@@ -6,6 +6,9 @@ class Board {
     }
 
     fun takeTurn(player: Player, move: Move) {
+        // handle conversion of string to int
+        // python pseudocode
+
         elements[move.row][move.column].setState(player.id)
     }
 
