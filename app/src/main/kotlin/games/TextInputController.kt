@@ -2,27 +2,27 @@ package games
 
 class TextInputController: InputController {
     override fun getMoveFromPlayer(p: Player): Move {
-        print("It's your turn " + p.name)
+        print("It's your turn " + p.name + " ")
         // Need some validation to make sure move is on the board
-        var input: String? = null
         while(true) {
             try {
                 println("Make your move ")
-                input = readLine()
-                if (input != null) {
-                    var xy = convertCoords(input)
-                    return Move(xy[0], xy[1])
-                }
+                // ? is a safe operator and trim will convert null to empty string
+                val input = readLine()?.trim()?:""
+                return convertCoords(input)
             } catch (e: Exception) {
                 println("invalid input, try again")
             }
         }
     }
-    fun convertCoords(rc: String) : List<Int> {
-        try {
-            return listOf(convertLetter(rc[0]), convertDigit(rc[1]))
-        } catch (e: InvalidInput) {
-            return listOf(convertLetter(rc[1]), convertDigit(rc[0]))
+    fun convertCoords(rc: String) : Move {
+        if (!(rc[0].isDigit() && rc[1].isLetter()) || (rc[1].isDigit() && rc[0].isLetter())) {
+            throw InvalidInput("expecting a digit and letter")
+        }
+        if (rc[0].isDigit()) {
+            return Move(convertLetter(rc[0]), convertDigit(rc[1]))
+        } else {
+            return Move(convertLetter(rc[1]), convertDigit(rc[0]))
         }
     }
     fun convertLetter(a: Char) : Int {

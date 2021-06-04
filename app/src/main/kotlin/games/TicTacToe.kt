@@ -8,6 +8,26 @@ class TicTacToe {
         get() {
             return "Welcome to the Tic Tac Toe game!"
         }
+//    val board = Board()
+//    var player = Player("Lianne", 1)
+//    var player2 = Player("Paul", 2)
+//
+//    /// Print the updated board after every move
+//    fun printBoard(board:Board) {
+//        return TextDisplayer().display(board)
+//    }
+//
+//    fun playGame(board:Board, player: Player) {
+//        /// greeting
+//        /// while true
+//            /// for player in players:
+//                /// get move from player
+//                /// take turn
+//                /// display board
+//                /// if player won, or numMoves = 9. return false. else true
+//
+//        var move = TextInputController().getMoveFromPlayer(player)
+//    }
 }
 
 fun main() {
