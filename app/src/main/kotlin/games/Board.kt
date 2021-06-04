@@ -1,9 +1,29 @@
 package games
 
-class Board {
+interface ValidMoveProvider {
+    fun getValidMoves(): List<Move>
+}
+
+
+class Board :ValidMoveProvider{
     fun getElementIterator(): Iterator<List<BoardElement>> {
         return elements.iterator()
     }
+
+    override fun getValidMoves(): List<Move> {
+        // return a mutable list of board elements
+        val result = mutableListOf<Move>()
+        // use .iterator.withIndex which returns a tuple (i, j)
+        for ((row, l) in elements.iterator().withIndex()) {
+            for ((col, i) in l.iterator().withIndex()) {
+                if (i.isEmpty()) {
+                    result.add(Move(row, col))
+                }
+            }
+        }
+        return result
+    }
+
 
     fun takeTurn(player: Player, move: Move) {
         // handle conversion of string to int

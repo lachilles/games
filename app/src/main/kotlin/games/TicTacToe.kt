@@ -19,11 +19,13 @@ class TicTacToe(
     //
     fun playGame() {
         println(greeting) /// greeting
+        printBoard(board)
         var moves = 0
         val players = listOf(player1, player2)
         while(moves < 9) {
             val curPlayer= players[moves%2]
-            val move = TextInputController().getMoveFromPlayer(curPlayer)
+            val validMoves = board.getValidMoves()
+            val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
             board.takeTurn(curPlayer, move)
             printBoard(board)
             moves++

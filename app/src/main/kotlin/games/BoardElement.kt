@@ -10,4 +10,8 @@ class BoardElement {
     public fun getValue():Int {
         return state
     }
+
+    public fun isEmpty():Boolean {
+        return state == 0
+    }
 }

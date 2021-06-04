@@ -1,5 +1,9 @@
 package games
 
 class Move(val row: Int, val column: Int) {
-    // Add a static helper that will map the ints to string
+
+    override fun equals(other: Any?): Boolean {
+        /// check the type is a Move type
+        return other is Move && row == other.row && column == other.column
+    }
 }

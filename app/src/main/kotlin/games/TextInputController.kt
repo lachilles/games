@@ -1,15 +1,21 @@
 package games
 
 class TextInputController: InputController {
-    override fun getMoveFromPlayer(p: Player): Move {
-        print("It's your turn " + p.name + " ")
+    override fun getMoveFromPlayer(p: Player, validMoves: List<Move>): Move {
+        print("It's your turn " + p.name + "! ")
         // Need some validation to make sure move is on the board
         while(true) {
             try {
                 println("Make your move ")
                 // ? is a safe operator and trim will convert null to empty string
                 val input = readLine()?.trim()?:""
-                return convertCoords(input)
+                val candidateMove = convertCoords(input)
+                // check if move is already taken.
+                if (candidateMove in validMoves) {
+                    return candidateMove
+                } else {
+                    println("That box is taken.")
+                }
             } catch (e: Exception) {
                 println("invalid input, try again" + e.localizedMessage)
             }
