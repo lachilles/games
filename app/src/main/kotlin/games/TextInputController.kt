@@ -11,16 +11,16 @@ class TextInputController: InputController {
                 val input = readLine()?.trim()?:""
                 return convertCoords(input)
             } catch (e: Exception) {
-                println("invalid input, try again")
+                println("invalid input, try again" + e.localizedMessage)
             }
         }
     }
     fun convertCoords(rc: String) : Move {
-        if (!(rc[0].isDigit() && rc[1].isLetter()) || (rc[1].isDigit() && rc[0].isLetter())) {
+        if (!((rc[0].isDigit() && rc[1].isLetter()) || (rc[1].isDigit() && rc[0].isLetter()))) {
             throw InvalidInput("expecting a digit and letter")
         }
         return when {
-            rc[0].isDigit() -> Move(convertLetter(rc[0]), convertDigit(rc[1]))
+            rc[0].isLetter() -> Move(convertLetter(rc[0]), convertDigit(rc[1]))
             else -> Move(convertLetter(rc[1]), convertDigit(rc[0]))
         }
     }
@@ -31,7 +31,7 @@ class TextInputController: InputController {
         return validateRange(a - '1', a)
     }
     fun validateRange(r:Int, source: Char) :Int {
-        if (r < 0 || r > 3) {
+        if (r < 0 || r >= 3) {
             throw InvalidInput(source.toString())
         }
         return r

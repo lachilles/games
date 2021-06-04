@@ -3,43 +3,52 @@
  */
 package games
 
-class TicTacToe {
-    val greeting: String
-        get() {
-            return "Welcome to the Tic Tac Toe game!"
+class TicTacToe(
+        val player1: Player = Player(name = "Lianne", id = 1),
+        val player2: Player = Player(name = "Paul", id = 2)
+) {
+    private val greeting = "Welcome to the Tic Tac Toe game!"
+    private val board = Board()
+    private val displayer = TextDisplayer()
+
+    //    /// Print the updated board after every move
+    fun printBoard(board: Board) {
+        return displayer.display(board)
+    }
+
+    //
+    fun playGame() {
+        println(greeting) /// greeting
+        var moves = 0
+        val players = listOf(player1, player2)
+        while(moves < 9) {
+            val curPlayer= players[moves%2]
+            val move = TextInputController().getMoveFromPlayer(curPlayer)
+            board.takeTurn(curPlayer, move)
+            printBoard(board)
+            moves++
         }
-//    val board = Board()
-//    var player = Player("Lianne", 1)
-//    var player2 = Player("Paul", 2)
-//
-//    /// Print the updated board after every move
-//    fun printBoard(board:Board) {
-//        return TextDisplayer().display(board)
-//    }
-//
-//    fun playGame(board:Board, player: Player) {
-//        /// greeting
-//        /// while true
-//            /// for player in players:
-//                /// get move from player
-//                /// take turn
-//                /// display board
-//                /// if player won, or numMoves = 9. return false. else true
-//
+        /// for player in players:
+        /// get move from player
+        /// take turn
+        /// display board
+        /// if player won, or numMoves = 9. return false. else true
+
 //        var move = TextInputController().getMoveFromPlayer(player)
-//    }
+    }
 }
 
 fun main() {
-    println(TicTacToe().greeting)
-    val board = Board()
-    TextDisplayer().display(board)
-    var player = Player("Lianne", 1)
-    var move = TextInputController().getMoveFromPlayer(player)
-    board.takeTurn(player, move)
-    TextDisplayer().display(board)
-    var player2 = Player("Paul", 2)
-    move = TextInputController().getMoveFromPlayer(player2)
-    board.takeTurn(player2, move)
-    TextDisplayer().display(board)
+    val game = TicTacToe().playGame()
+//    println(TicTacToe().greeting)
+//    val board = Board()
+//    TextDisplayer().display(board)
+//    var player = Player("Lianne", 1)
+//    var move = TextInputController().getMoveFromPlayer(player)
+//    board.takeTurn(player, move)
+//    TextDisplayer().display(board)
+//    var player2 = Player("Paul", 2)
+//    move = TextInputController().getMoveFromPlayer(player2)
+//    board.takeTurn(player2, move)
+//    TextDisplayer().display(board)
 }
