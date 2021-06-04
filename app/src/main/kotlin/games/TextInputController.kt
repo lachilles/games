@@ -19,10 +19,9 @@ class TextInputController: InputController {
         if (!(rc[0].isDigit() && rc[1].isLetter()) || (rc[1].isDigit() && rc[0].isLetter())) {
             throw InvalidInput("expecting a digit and letter")
         }
-        if (rc[0].isDigit()) {
-            return Move(convertLetter(rc[0]), convertDigit(rc[1]))
-        } else {
-            return Move(convertLetter(rc[1]), convertDigit(rc[0]))
+        return when {
+            rc[0].isDigit() -> Move(convertLetter(rc[0]), convertDigit(rc[1]))
+            else -> Move(convertLetter(rc[1]), convertDigit(rc[0]))
         }
     }
     fun convertLetter(a: Char) : Int {
