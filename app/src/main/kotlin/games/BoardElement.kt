@@ -1,6 +1,6 @@
 package games
 
-class BoardElement {
+data class BoardElement(val row: Int, val col: Int) {
     private var state = 0
 
     public fun setState(x:Int){

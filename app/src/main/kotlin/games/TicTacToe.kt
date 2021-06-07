@@ -27,8 +27,13 @@ class TicTacToe(
             val validMoves = board.getValidMoves()
             val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
             board.takeTurn(curPlayer, move)
+            val winner = WinnerDetector().detectWinner(board, player1, player2)
             printBoard(board)
             moves++
+            if (winner != null) {
+                print("${winner.name} has Won!")
+                break
+            }
         }
         /// for player in players:
         /// get move from player
