@@ -1,6 +1,6 @@
 package games
 
-class BoardElement {
+class BoardElement  {    // put row and column in the constructor
     private var state = 0
 
     public fun setState(x:Int){

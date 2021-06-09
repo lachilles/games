@@ -18,17 +18,26 @@ class TicTacToe(
 
     //
     fun playGame() {
+        val moveHistory = mutableListOf<MoveCommand>()
         println(greeting) /// greeting
         printBoard(board)
         var moves = 0
         val players = listOf(player1, player2)
         while(moves < 9) {
-            val curPlayer= players[moves%2]
+            val curPlayer = players[moves % 2]
             val validMoves = board.getValidMoves()
-            val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
-            board.takeTurn(curPlayer, move)
+            try {
+                val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
+                val command = MoveCommand(board, curPlayer, move)
+                command.apply()
+                moveHistory.add(command)
+                moves++
+            } catch (u: UndoException) {
+                val lastCommand = moveHistory.removeLast()
+                lastCommand.undo()
+                moves--
+            }
             printBoard(board)
-            moves++
         }
         /// for player in players:
         /// get move from player
