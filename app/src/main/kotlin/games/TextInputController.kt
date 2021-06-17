@@ -6,7 +6,7 @@ class TextInputController: InputController {
         // Need some validation to make sure move is on the board
         while(true) {
             try {
-                println("Make your move ")
+                println("Make your move")
                 // ? is a safe operator and trim will convert null to empty string
                 val input = readLine()?.trim()?:""
                 val candidateMove = convertCoords(input)

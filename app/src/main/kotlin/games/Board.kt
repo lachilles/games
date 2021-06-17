@@ -40,6 +40,24 @@ class Board :ValidMoveProvider{
         elements[move.row][move.column].setState(player.id)
     }
 
+    internal fun setState(gameState: String) {
+        val it = gameState.splitToSequence(" ", "\n").iterator()
+        for (r in 0..2) {
+            for (c in 0..2) {
+                elements[r][c].setState(toState(it.next()))
+            }
+        }
+    }
+
+    private fun toState(symbol: String): Int {
+        return when (symbol) {
+            "." -> 0
+            "X" -> 1
+            "O" -> 2
+            else -> throw Exception("unrecognized symbol $symbol")
+        }
+    }
+
     val row1 = listOf(
             BoardElement(0, 0),
             BoardElement(0, 1),
