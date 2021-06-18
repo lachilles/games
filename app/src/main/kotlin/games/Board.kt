@@ -33,9 +33,10 @@ class Board :ValidMoveProvider{
     }
 
 
-    fun takeTurn(player: Player, move: Move) {
+    fun takeTurn(player: Player, move: Move) {  //do it command apply function would be Board .taketurn
         // handle conversion of string to int
         // python pseudocode
+        // takes a list of the previous state with the memento pattern
 
         elements[move.row][move.column].setState(player.id)
     }
@@ -47,6 +48,10 @@ class Board :ValidMoveProvider{
                 elements[r][c].setState(toState(it.next()))
             }
         }
+    }
+
+    fun empty(move: Move) {
+        elements[move.row][move.column].setState(0)
     }
 
     private fun toState(symbol: String): Int {

@@ -19,6 +19,7 @@ class TicTacToe(
 
     //
     fun playGame() {
+        val moveHistory = mutableListOf<MoveCommand>()
         println(greeting) /// greeting
         printBoard()
         var moves = 0
@@ -26,15 +27,23 @@ class TicTacToe(
         while(moves < 9) {
             val curPlayer = players[moves % 2]
             val validMoves = board.getValidMoves()
-            val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
-            board.takeTurn(curPlayer, move)
-            val winner = WinnerDetector().detectWinner(board, player1, player2)
-            printBoard()
-            moves++
-            if (winner != null) {
-                print("${winner.name} has Won!")
-                break
+            try {
+                val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
+                val command = MoveCommand(board, curPlayer, move)
+                command.apply()
+                moveHistory.add(command)
+                moves++
+                val winner = WinnerDetector().detectWinner(board, player1, player2)
+                if (winner != null) {
+                    print("${winner.name} has Won!")
+                    break
+                }
+            } catch (u: UndoException) {
+                val lastCommand = moveHistory.removeLast()
+                lastCommand.undo()
+                moves--
             }
+            printBoard(board)
         }
     }
 

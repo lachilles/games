@@ -6,9 +6,12 @@ class TextInputController: InputController {
         // Need some validation to make sure move is on the board
         while(true) {
             try {
-                println("Make your move")
+                println("Make your move (or U to undo previous move)")
                 // ? is a safe operator and trim will convert null to empty string
                 val input = readLine()?.trim()?:""
+                if (input.toUpperCase() == "U") {
+                    throw UndoException()
+                }
                 val candidateMove = convertCoords(input)
                 // check if move is already taken.
                 if (candidateMove in validMoves) {
