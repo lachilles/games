@@ -43,7 +43,7 @@ class TicTacToe(
                 lastCommand.undo()
                 moves--
             }
-            printBoard(board)
+            printBoard()
         }
     }
 
