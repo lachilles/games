@@ -8,11 +8,12 @@ class TicTacToe(
         val player2: Player = Player(name = "Paul", id = 2)
 ) {
     private val greeting = "Welcome to the Tic Tac Toe game!"
-    private val board = Board()
+    internal val board = Board()
     private val displayer = TextDisplayer()
+    private var winner:Player? = null
 
     //    /// Print the updated board after every move
-    fun printBoard(board: Board) {
+    fun printBoard() {
         return displayer.display(board)
     }
 
@@ -20,7 +21,7 @@ class TicTacToe(
     fun playGame() {
         val moveHistory = mutableListOf<MoveCommand>()
         println(greeting) /// greeting
-        printBoard(board)
+        printBoard()
         var moves = 0
         val players = listOf(player1, player2)
         while(moves < 9) {
@@ -32,34 +33,35 @@ class TicTacToe(
                 command.apply()
                 moveHistory.add(command)
                 moves++
+                val winner = WinnerDetector().detectWinner(board, player1, player2)
+                if (winner != null) {
+                    print("${winner.name} has Won!")
+                    break
+                }
             } catch (u: UndoException) {
                 val lastCommand = moveHistory.removeLast()
                 lastCommand.undo()
                 moves--
             }
-            printBoard(board)
+            printBoard()
         }
-        /// for player in players:
-        /// get move from player
-        /// take turn
-        /// display board
-        /// if player won, or numMoves = 9. return false. else true
+    }
 
-//        var move = TextInputController().getMoveFromPlayer(player)
+    fun takeTurn(p: Player, move: Move) {
+        board.takeTurn(p, move)
+        winner = WinnerDetector().detectWinner(board, player1, player2)
+    }
+
+    fun getWinner(): Player? {
+        return winner
+    }
+
+    internal fun setState(gameState: String) {
+        board.setState(gameState)
     }
 }
 
+
 fun main() {
     val game = TicTacToe().playGame()
-//    println(TicTacToe().greeting)
-//    val board = Board()
-//    TextDisplayer().display(board)
-//    var player = Player("Lianne", 1)
-//    var move = TextInputController().getMoveFromPlayer(player)
-//    board.takeTurn(player, move)
-//    TextDisplayer().display(board)
-//    var player2 = Player("Paul", 2)
-//    move = TextInputController().getMoveFromPlayer(player2)
-//    board.takeTurn(player2, move)
-//    TextDisplayer().display(board)
 }
