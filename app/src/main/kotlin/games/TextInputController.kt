@@ -20,13 +20,13 @@ class TextInputController: InputController {
                     println("That box is taken.")
                 }
             } catch (e: Exception) {
-                println("invalid input, try again" + e.localizedMessage)
+                println("invalid input, try again " + e.localizedMessage)
             }
         }
     }
     fun convertCoords(rc: String) : Move {
         if (!((rc[0].isDigit() && rc[1].isLetter()) || (rc[1].isDigit() && rc[0].isLetter()))) {
-            throw InvalidInput("expecting a digit and letter")
+            throw InvalidInput("(expecting a digit and letter)")
         }
         return when {
             rc[0].isLetter() -> Move(convertLetter(rc[0]), convertDigit(rc[1]))

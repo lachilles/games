@@ -39,9 +39,14 @@ class TicTacToe(
                     break
                 }
             } catch (u: UndoException) {
-                val lastCommand = moveHistory.removeLast()
-                lastCommand.undo()
-                moves--
+                if (moveHistory.isNullOrEmpty()) {
+                    print("Cannot undo with no moves. \n")
+                }
+                else {
+                    val lastCommand = moveHistory.removeLast()
+                    lastCommand.undo()
+                    moves--
+                }
             }
             printBoard()
         }
