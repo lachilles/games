@@ -4,8 +4,8 @@
 package games
 
 class TicTacToe(
-        val player1: Player = Player(name = "Lianne", id = 1),
-        val player2: Player = Player(name = "Paul", id = 2)
+        val player1: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
+        val player2: Player = HumanPlayer(name = "Paul", id = 2, TextInputController())
 ) {
     private val greeting = "Welcome to the Tic Tac Toe game!"
     internal val board = Board()
@@ -28,14 +28,15 @@ class TicTacToe(
             val curPlayer = players[moves % 2]
             val validMoves = board.getValidMoves()
             try {
-                val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
+//                val move = TextInputController().getMoveFromPlayer(curPlayer, validMoves)
+                val move = curPlayer.makeMove(validMoves)
                 val command = MoveCommand(board, curPlayer, move)
                 command.apply()
                 moveHistory.add(command)
                 moves++
-                val winner = WinnerDetector().detectWinner(board, player1, player2)
+                winner = WinnerDetector().detectWinner(board, player1, player2)
                 if (winner != null) {
-                    print("${winner.name} has Won!")
+                    print("${winner?.name} has Won!")
                     break
                 }
             } catch (u: UndoException) {

@@ -7,8 +7,8 @@ class TikTacToeTest {
 
     @Test
     fun `test no winner`() {
-        val p1 = Player("Lianne", 1)
-        val p2 = Player("Paul", 2)
+        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
         val g = TicTacToe(p1, p2)
         g.takeTurn(p1, Move(0, 0))
         g.takeTurn(p2, Move(1, 1))
@@ -24,8 +24,8 @@ class TikTacToeTest {
 
     @Test
     fun `test p1 winning`() {
-        val p1 = Player("Lianne", 1)
-        val p2 = Player("Paul", 2)
+        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
         val g = TicTacToe(p1, p2)
         val gameState = """
             X O X
@@ -39,8 +39,8 @@ class TikTacToeTest {
 
     @Test
     fun `test p2 winning`() {
-        val p1 = Player("Lianne", 1)
-        val p2 = Player("Paul", 2)
+        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
         val g = TicTacToe(p1, p2)
         val gameState = """
             X O X
@@ -52,4 +52,20 @@ class TikTacToeTest {
         assertEquals(p2, g.getWinner())
     }
 
+    @Test
+    fun `test AnyOpenSquare strategy`() {
+        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val p2 = ComputerPlayer(name = "robot", id = 2, AnyOpenSquare())
+        val g = TicTacToe(p1, p2)
+        // val get valid moves list. make board available
+        val gameState = """
+                X O X
+                O X .
+                . O .
+            """.trimIndent()
+        g.setState(gameState)
+        g.takeTurn(p1, Move(1, 2))
+        g.takeTurn(p2, p2.makeMove(g.board.getValidMoves()))
+        assertEquals(p1, g.getWinner())
+    }
 }
