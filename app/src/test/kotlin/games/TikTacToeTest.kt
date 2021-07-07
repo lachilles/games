@@ -2,6 +2,8 @@ package games
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNull
 
 class TikTacToeTest {
 
@@ -65,7 +67,7 @@ class TikTacToeTest {
             """.trimIndent()
         g.setState(gameState)
         g.takeTurn(p1, Move(1, 2))
-        g.takeTurn(p2, p2.makeMove(g.board.getValidMoves()))
-        assertEquals(p1, g.getWinner())
+        g.takeTurn(p2, p2.makeMove(g.board, g.board.getValidMoves()))
+        assertEquals(1, g.board.getValidMoves().size)
     }
 }

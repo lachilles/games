@@ -5,7 +5,7 @@ package games
 
 class TicTacToe(
         val player1: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
-        val player2: Player = ComputerPlayer(name = "Paul", id = 2, AnyOpenSquare())
+        val player2: Player = ComputerPlayer(name = "Paul", id = 2, BlockOpponent())
 ) {
     private val greeting = "Welcome to the Tic Tac Toe game!"
     internal val board = Board()
@@ -28,7 +28,7 @@ class TicTacToe(
             val curPlayer = players[moves % 2]
             val validMoves = board.getValidMoves()
             try {
-                val move = curPlayer.makeMove(validMoves)
+                val move = curPlayer.makeMove(board, validMoves)
                 val command = MoveCommand(board, curPlayer, move)
                 command.apply()
                 moveHistory.add(command)
@@ -68,5 +68,5 @@ class TicTacToe(
 
 
 fun main() {
-    val game = TicTacToe().playGame()
+    TicTacToe().playGame()
 }

@@ -4,12 +4,12 @@ import java.util.stream.Collectors
 import kotlin.random.Random
 
 interface Strategy {
-    fun makeMove(player: ComputerPlayer, validMoves: List<Move>): Move
+    fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move
 }
 
 //// Classes for individual strategies
 class AnyOpenSquare: Strategy {
-    override fun makeMove(player: ComputerPlayer, validMoves: List<Move>): Move {
+    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
         // randomint takeTurn if move is empty.
         val guess = Random.nextInt(validMoves.size)
         return validMoves[guess]
@@ -17,7 +17,7 @@ class AnyOpenSquare: Strategy {
 }
 
 class Offensive: Strategy {
-    override fun makeMove(player: ComputerPlayer, validMoves: List<Move>): Move {
+    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
         TODO("Not yet implemented")
 //        for(sequence in board.getWinningSequences()) {
 //            val empty = kotlin.sequences.sequence.stream().filter { it.isEmpty() }.count().toInt()
@@ -30,10 +30,16 @@ class Offensive: Strategy {
     }
 }
 
-class BlockOpponent:Strategy {
-    override fun makeMove(player: ComputerPlayer, validMoves: List<Move>): Move {
-        TODO("Not yet implemented")
+class Defensive: Strategy {
+    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
+        val emergencyMove = getBlockingMove(board, player)
+        if (emergencyMove != null) {
+            return emergencyMove
+        } else {
+            return AnyOpenSquare().makeMove(board, player, validMoves)
+        }
     }
+
     private fun getBlockingMove(board: Board, player: Player) : Move? {
         for(sequence in board.getWinningSequences()) {
             val empty = sequence.stream().filter { it.isEmpty() }.collect(Collectors.toList())
