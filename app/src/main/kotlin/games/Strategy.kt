@@ -32,7 +32,7 @@ class Offensive: Strategy {
 
 class Defensive: Strategy {
     override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
-        val emergencyMove = getBlockingMove(board, player)
+        val emergencyMove = player.opponent()?.let { getBlockingMove(board, it) }
         if (emergencyMove != null) {
             return emergencyMove
         } else {
