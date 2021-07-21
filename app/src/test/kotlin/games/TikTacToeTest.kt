@@ -101,4 +101,34 @@ class TikTacToeTest {
         g.setState(gameState)
         assertEquals(p2.makeMove(g.board, g.board.getValidMoves()), Move(0, 1))
     }
+
+    @Test
+    fun `test two in a row strategy`() {
+        val p1 = ComputerPlayer(name = "robot", id = 2, Offensive())
+        val p2 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val g = TicTacToe(p1, p2)
+        // val get valid moves list. make board available
+        val gameState = """
+                        . . .
+                        . X .
+                        . O .
+                    """.trimIndent()
+        g.setState(gameState)
+        assertEquals(p1.makeMove(g.board, g.board.getValidMoves()).row, 2)
+    }
+
+    @Test
+    fun `test play middle strategy`() {
+        val p1 = ComputerPlayer(name = "robot", id = 2, Offensive())
+        val p2 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val g = TicTacToe(p1, p2)
+        // val get valid moves list. make board available
+        val gameState = """
+                        . . .
+                        . . .
+                        . . .
+                    """.trimIndent()
+        g.setState(gameState)
+        assertEquals(p1.makeMove(g.board, g.board.getValidMoves()), Move(1, 1))
+    }
 }

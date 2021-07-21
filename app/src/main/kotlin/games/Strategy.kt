@@ -29,6 +29,18 @@ abstract class SmartStrategy: Strategy {
         }
         return null
     }
+
+    internal fun getOneInARow(board: Board, player: Player): Move? {
+        for (sequence in board.getWinningSequences()) {
+            val empty = sequence.stream().filter { it.isEmpty() }.collect(Collectors.toList())
+            val playerCells = sequence.stream().filter { it.getValue() == player.id }.count()
+                    .toInt()
+            if (empty.size == 2 && playerCells == 1) {
+                return Move(empty[0].row, empty[0].col)
+            }
+        }
+        return null
+    }
 }
 
 class Offensive: SmartStrategy() {
@@ -36,9 +48,15 @@ class Offensive: SmartStrategy() {
         val winningMove = getTwoInARow(board, player)
         if (winningMove != null) {
             return winningMove
-        } else {
-            return AnyOpenSquare().makeMove(board, player, validMoves)
         }
+        val betterMove = getOneInARow(board, player)
+        if (betterMove != null) {
+            return betterMove
+        }
+        if (validMoves.contains(Move(1,1))) {
+            return Move(1,1)
+        }
+        return AnyOpenSquare().makeMove(board, player, validMoves)
     }
 }
 
