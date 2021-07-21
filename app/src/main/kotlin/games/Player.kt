@@ -10,8 +10,8 @@ abstract class Player(val name: String, val id: Int) {
         this.opponent = opponent
     }
 
-    fun opponent() : Player? {
-        return opponent
+    fun opponent() : Player {
+        return opponent!!
     }
 
 }

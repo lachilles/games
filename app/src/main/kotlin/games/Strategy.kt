@@ -16,32 +16,10 @@ class AnyOpenSquare: Strategy {
     }
 }
 
-class Offensive: Strategy {
-    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
-        TODO("Not yet implemented")
-//        for(sequence in board.getWinningSequences()) {
-//            val empty = kotlin.sequences.sequence.stream().filter { it.isEmpty() }.count().toInt()
-//            val playerCells = kotlin.sequences.sequence.stream().filter { it.getValue() == player.id }.count()
-//                    .toInt()
-//            if (empty == 1 && playerCells == 2) {
-//                return True
-//            }
-//        }
-    }
-}
-
-class Defensive: Strategy {
-    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
-        val emergencyMove = player.opponent()?.let { getBlockingMove(board, it) }
-        if (emergencyMove != null) {
-            return emergencyMove
-        } else {
-            return AnyOpenSquare().makeMove(board, player, validMoves)
-        }
-    }
-
-    private fun getBlockingMove(board: Board, player: Player) : Move? {
-        for(sequence in board.getWinningSequences()) {
+// make it a abstract class since we don't need makeMove
+abstract class SmartStrategy: Strategy {
+    internal fun getTwoInARow(board: Board, player: Player): Move? {
+        for (sequence in board.getWinningSequences()) {
             val empty = sequence.stream().filter { it.isEmpty() }.collect(Collectors.toList())
             val playerCells = sequence.stream().filter { it.getValue() == player.id }.count()
                     .toInt()
@@ -53,10 +31,31 @@ class Defensive: Strategy {
     }
 }
 
-//class AnyOpenCorner(Strategy) {
-//    fun apply(b: Board) {
-//        // if any corner is open, taketurn
-//    }
-//}
-//
+class Offensive: SmartStrategy() {
+    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
+
+        TODO("Not yet implemented")
+        //
+
+        //        for(sequence in board.getWinningSequences()) {
+//            val empty = kotlin.sequences.sequence.stream().filter { it.isEmpty() }.count().toInt()
+//            val playerCells = kotlin.sequences.sequence.stream().filter { it.getValue() == player.id }.count()
+//                    .toInt()
+//            if (empty == 1 && playerCells == 2) {
+//                return True
+//            }
+    }
+}
+
+class Defensive: SmartStrategy() {
+    override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
+        val emergencyMove = getTwoInARow(board, player.opponent())
+        if (emergencyMove != null) {
+            return emergencyMove
+        } else {
+            return AnyOpenSquare().makeMove(board, player, validMoves)
+        }
+    }
+}
+
 
