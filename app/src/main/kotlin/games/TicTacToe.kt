@@ -5,12 +5,17 @@ package games
 
 class TicTacToe(
         val player1: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
-        val player2: Player = ComputerPlayer(name = "Paul", id = 2, BlockOpponent())
+        val player2: Player = ComputerPlayer(name = "Paul", id = 2, AnyOpenSquare())
 ) {
     private val greeting = "Welcome to the Tic Tac Toe game!"
     internal val board = Board()
     private val displayer = TextDisplayer()
     private var winner:Player? = null
+
+    init {
+        player1.setOpponent(player2)
+        player2.setOpponent(player1)
+    }
 
     //    /// Print the updated board after every move
     fun printBoard() {

@@ -2,7 +2,17 @@ package games
 
 abstract class Player(val name: String, val id: Int) {
 
+    private var opponent:Player? = null
+
     abstract fun makeMove(board: Board, validMoves: List<Move>): Move
+
+    fun setOpponent(opponent:Player) {
+        this.opponent = opponent
+    }
+
+    fun opponent() : Player? {
+        return opponent
+    }
 
 }
 
