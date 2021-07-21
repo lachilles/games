@@ -70,4 +70,20 @@ class TikTacToeTest {
         g.takeTurn(p2, p2.makeMove(g.board, g.board.getValidMoves()))
         assertEquals(1, g.board.getValidMoves().size)
     }
+
+    @Test
+    fun `test Defensive strategy`() {
+        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val p2 = ComputerPlayer(name = "robot", id = 2, Defensive())
+        val g = TicTacToe(p1, p2)
+        // val get valid moves list. make board available
+        val gameState = """
+                O X .
+                . X .
+                . O .
+            """.trimIndent()
+        g.setState(gameState)
+        g.takeTurn(p1, Move(1, 0))
+        assertEquals(p2.makeMove(g.board, g.board.getValidMoves()), Move(1, 2))
+    }
 }
