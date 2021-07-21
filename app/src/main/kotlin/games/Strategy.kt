@@ -33,17 +33,12 @@ abstract class SmartStrategy: Strategy {
 
 class Offensive: SmartStrategy() {
     override fun makeMove(board: Board, player: ComputerPlayer, validMoves: List<Move>): Move {
-
-        TODO("Not yet implemented")
-        //
-
-        //        for(sequence in board.getWinningSequences()) {
-//            val empty = kotlin.sequences.sequence.stream().filter { it.isEmpty() }.count().toInt()
-//            val playerCells = kotlin.sequences.sequence.stream().filter { it.getValue() == player.id }.count()
-//                    .toInt()
-//            if (empty == 1 && playerCells == 2) {
-//                return True
-//            }
+        val winningMove = getTwoInARow(board, player)
+        if (winningMove != null) {
+            return winningMove
+        } else {
+            return AnyOpenSquare().makeMove(board, player, validMoves)
+        }
     }
 }
 
