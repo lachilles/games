@@ -21,6 +21,7 @@ class WinnerDetector {
     private fun detectWinner(board: Board) : Int {
         for(sequence in board.getWinningSequences()) {
             val sum = sequence.stream().collect(Collectors.summingInt { it.getValue() })
+            // this could break if there's a player id 3
             val nonEmpty = sequence.stream().filter { !it.isEmpty() }.count().toInt()
             if (nonEmpty == 3 && sum == 3 || sum == 6) {
                 return sum / 3

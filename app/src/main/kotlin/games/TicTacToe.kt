@@ -3,9 +3,15 @@
  */
 package games
 
+
+// Think about generalizing this to a game class and dropping in a tictactoe variant of it.
+// Maybe create the players after the game and board is created. The game wouldn't be playable
+// until sufficient players have arrived.
+// Not very testable.
 class TicTacToe(
-        val player1: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
-        val player2: Player = ComputerPlayer(name = "Paul", id = 2, Defensive())
+        val player2: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
+        val player1: Player = ComputerPlayer(name = "Paul", id = 2, CompositeStrategy(listOf
+        (Offensive(), Defensive())))
 ) {
     private val greeting = "Welcome to the Tic Tac Toe game!"
     internal val board = Board()
@@ -57,6 +63,7 @@ class TicTacToe(
         }
     }
 
+    // the following functions get used by tests but not the game
     fun takeTurn(p: Player, move: Move) {
         board.takeTurn(p, move)
         winner = WinnerDetector().detectWinner(board, player1, player2)
