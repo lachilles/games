@@ -59,4 +59,5 @@ class TextInputController: InputController {
         }
         return r
     }
+    class InvalidInput(message: String): Exception(message)
 }
