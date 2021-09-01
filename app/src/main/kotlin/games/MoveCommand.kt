@@ -1,12 +1,12 @@
 package games
 
-class MoveCommand(val b: Board, val p: Player, val m: Move)  {
+class MoveCommand(val board: Board, val player: Player, val move: Move)  {
     // command pattern
     fun apply() {
-        b.takeTurn(p, m)
+        board.takeTurn(player, move)
     }
 
     fun undo() {
-        b.empty(m)
+        board.empty(move)
     }
 }

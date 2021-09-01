@@ -2,8 +2,6 @@ package games
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
 
 class TikTacToeTest {
 
@@ -12,16 +10,31 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
         val g = TicTacToe(p1, p2)
-        g.takeTurn(p1, Move(0, 0))
-        g.takeTurn(p2, Move(1, 1))
-        g.takeTurn(p1, Move(2, 0))
-        g.takeTurn(p2, Move(1, 0))
-        g.takeTurn(p1, Move(1, 2))
-        g.takeTurn(p2, Move(2, 2))
-        g.takeTurn(p1, Move(0, 2))
-        g.takeTurn(p2, Move(0, 1))
-        g.takeTurn(p1, Move(2, 1))
+        val moveHistory = mutableListOf<MoveCommand>()
+        g.makeMove(p1, Move(0, 0), moveHistory)
+        g.makeMove(p2, Move(1, 1), moveHistory)
+        g.makeMove(p1, Move(2, 0), moveHistory)
+        g.makeMove(p2, Move(1, 0), moveHistory)
+        g.makeMove(p1, Move(1, 2), moveHistory)
+        g.makeMove(p2, Move(2, 2), moveHistory)
+        g.makeMove(p1, Move(0, 2), moveHistory)
+        g.makeMove(p2, Move(0, 1), moveHistory)
+        g.makeMove(p1, Move(2, 1), moveHistory)
+        assertEquals(Move(2, 1), moveHistory.last().move)
+        assertEquals(9, moveHistory.size)
         assertEquals(null, g.getWinner())
+    }
+
+    @Test
+    fun `test undoing move`() {
+        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+        val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
+        val g = TicTacToe(p1, p2)
+        val moveHistory = mutableListOf<MoveCommand>()
+        g.makeMove(p1, Move(0, 0), moveHistory)
+        g.undoLastMove(moveHistory)
+        assertEquals(0, moveHistory.size)
+        assertEquals(0, g.board.getElement(0, 0).getValue())
     }
 
     @Test
@@ -29,13 +42,14 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
         val g = TicTacToe(p1, p2)
+        val moveHistory = mutableListOf<MoveCommand>()
         val gameState = """
             X O X
             O X .
             . O .
         """.trimIndent()
         g.setState(gameState)
-        g.takeTurn(p1, Move(2, 2))
+        g.makeMove(p1, Move(2, 2), moveHistory)
         assertEquals(p1, g.getWinner())
     }
 
@@ -44,13 +58,14 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = HumanPlayer(name = "Paul", id = 2, TextInputController())
         val g = TicTacToe(p1, p2)
+        val moveHistory = mutableListOf<MoveCommand>()
         val gameState = """
             X O X
             . . X
             . O .
         """.trimIndent()
         g.setState(gameState)
-        g.takeTurn(p2, Move(1, 1))
+        g.makeMove(p2, Move(1, 1), moveHistory)
         assertEquals(p2, g.getWinner())
     }
 
@@ -59,6 +74,7 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = ComputerPlayer(name = "robot", id = 2, AnyOpenSquare())
         val g = TicTacToe(p1, p2)
+        val moveHistory = mutableListOf<MoveCommand>()
         // val get valid moves list. make board available
         val gameState = """
                 X O X
@@ -66,8 +82,8 @@ class TikTacToeTest {
                 . O .
             """.trimIndent()
         g.setState(gameState)
-        g.takeTurn(p1, Move(1, 2))
-        g.takeTurn(p2, p2.makeMove(g.board, g.board.getValidMoves()))
+        g.makeMove(p1, Move(1, 2), moveHistory)
+        g.makeMove(p2, p2.makeMove(g.board, g.board.getValidMoves()), moveHistory)
         assertEquals(1, g.board.getValidMoves().size)
     }
 
@@ -76,6 +92,7 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = ComputerPlayer(name = "robot", id = 2, Defensive())
         val g = TicTacToe(p1, p2)
+        val moveHistory = mutableListOf<MoveCommand>()
         // val get valid moves list. make board available
         val gameState = """
                 O X .
@@ -83,7 +100,7 @@ class TikTacToeTest {
                 . O .
             """.trimIndent()
         g.setState(gameState)
-        g.takeTurn(p1, Move(1, 0))
+        g.makeMove(p1, Move(1, 0), moveHistory)
         assertEquals(p2.makeMove(g.board, g.board.getValidMoves()), Move(1, 2))
     }
 
@@ -92,6 +109,7 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = ComputerPlayer(name = "robot", id = 2, Offensive())
         val g = TicTacToe(p1, p2)
+        val moveHistory = mutableListOf<MoveCommand>()
         // val get valid moves list. make board available
         val gameState = """
                     O . O

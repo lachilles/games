@@ -12,6 +12,10 @@ class Board :ValidMoveProvider{
         return elements.iterator()
     }
 
+    fun getElement(row: Int, col: Int): BoardElement {
+        return elements[row][col]
+    }
+
     override fun getValidMoves(): List<Move> {
         return elements.stream()
                 .flatMap { m -> m.stream() }

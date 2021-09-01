@@ -9,9 +9,8 @@ package games
 // until sufficient players have arrived.
 // Not very testable.
 class TicTacToe(
-        val player2: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
-        val player1: Player = ComputerPlayer(name = "Paul", id = 2, CompositeStrategy(listOf
-        (Offensive(), Defensive())))
+        val player1: Player = HumanPlayer(name = "Lianne", id = 1, TextInputController()),
+        val player2: Player = HumanPlayer(name = "Paul", id = 2, TextInputController())
 ) {
     private val greeting = "Welcome to the Tic Tac Toe game!"
     internal val board = Board()
@@ -29,22 +28,15 @@ class TicTacToe(
     }
 
     //
-    fun playGame() {
-        val moveHistory = mutableListOf<MoveCommand>()
+    fun playGame(moveHistory: MutableList<MoveCommand>) {
         println(greeting) /// greeting
         printBoard()
-        var moves = 0
-        val players = listOf(player1, player2)
-        while(moves < 9) {
-            val curPlayer = players[moves % 2]
+        var curPlayer = player1
+        while(moveHistory.size != 9) {
             val validMoves = board.getValidMoves()
             try {
                 val move = curPlayer.makeMove(board, validMoves)
-                val command = MoveCommand(board, curPlayer, move)
-                command.apply()
-                moveHistory.add(command)
-                moves++
-                winner = WinnerDetector().detectWinner(board, player1, player2)
+                makeMove(curPlayer, move, moveHistory)
                 if (winner != null) {
                     print("${winner?.name} has Won!")
                     break
@@ -54,18 +46,24 @@ class TicTacToe(
                     print("Cannot undo with no moves. \n")
                 }
                 else {
-                    val lastCommand = moveHistory.removeLast()
-                    lastCommand.undo()
-                    moves--
+                    undoLastMove(moveHistory)
                 }
+            } finally {
+                curPlayer = curPlayer.opponent()
             }
             printBoard()
         }
     }
 
-    // the following functions get used by tests but not the game
-    fun takeTurn(p: Player, move: Move) {
-        board.takeTurn(p, move)
+    internal fun undoLastMove(moveHistory: MutableList<MoveCommand>) {
+        val lastCommand = moveHistory.removeLast()
+        lastCommand.undo()
+    }
+
+    internal fun makeMove(curPlayer: Player, move: Move, moveHistory: MutableList<MoveCommand>) {
+        val command = MoveCommand(board, curPlayer, move)
+        command.apply()
+        moveHistory.add(command)
         winner = WinnerDetector().detectWinner(board, player1, player2)
     }
 
@@ -76,9 +74,10 @@ class TicTacToe(
     internal fun setState(gameState: String) {
         board.setState(gameState)
     }
+
 }
 
 
 fun main() {
-    TicTacToe().playGame()
+    TicTacToe().playGame(mutableListOf<MoveCommand>())
 }
