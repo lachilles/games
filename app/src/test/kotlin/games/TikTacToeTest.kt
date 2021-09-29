@@ -109,7 +109,6 @@ class TikTacToeTest {
         val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
         val p2 = ComputerPlayer(name = "robot", id = 2, Offensive())
         val g = TicTacToe(p1, p2)
-        val moveHistory = mutableListOf<MoveCommand>()
         // val get valid moves list. make board available
         val gameState = """
                     O . O
@@ -149,4 +148,23 @@ class TikTacToeTest {
         g.setState(gameState)
         assertEquals(p1.makeMove(g.board, g.board.getValidMoves()), Move(1, 1))
     }
+
+//    @Test
+//    fun `test Composite strategy`() {
+//        val p1 = HumanPlayer(name = "Lianne", id = 1, TextInputController())
+//        val p2 = ComputerPlayer(name = "robot", id = 2, CompositeStrategy(listOf
+//        (Offensive(), Defensive())))
+//        val g = TicTacToe(p1, p2)
+//        val moveHistory = mutableListOf<MoveCommand>()
+//        // val get valid moves list. make board available
+//        val gameState = """
+//                X O .
+//                . . .
+//                . O .
+//            """.trimIndent()
+//        g.setState(gameState)
+//        assertEquals(p2.makeMove(g.board, g.board.getValidMoves()), Move(1, 1))
+//        g.makeMove(p1, Move(1, 0), moveHistory)
+//        assertEquals(p2.makeMove(g.board, g.board.getValidMoves()), Move(2, 2))
+//    }
 }

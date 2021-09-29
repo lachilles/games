@@ -1,5 +1,6 @@
 package games
 
+import java.util.*
 import kotlin.jvm.Throws
 
 
@@ -16,11 +17,13 @@ interface InputController {
 
 class TextInputController: InputController {
     override fun getMoveFromPlayer(p: Player, validMoves: List<Move>): Move {
-        print("It's your turn " + p.name + "! ")
+        val rb = ResourceBundle.getBundle("tic_tac_toe")
+        println(rb.getString("playerTurn").format(p.name)) // getString takes a locale. getString
+        // may turn into __string__
         // Need some validation to make sure move is on the board
         while(true) {
             try {
-                println("Make your move (or U to undo previous move)")
+                println(rb.getString("playerPrompt"))
                 // ? is a safe operator and trim will convert null to empty string
                 val input = readLine()?.trim()?:""
                 if (input.toUpperCase() == "U") {
