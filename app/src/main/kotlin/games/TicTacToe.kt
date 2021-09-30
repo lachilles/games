@@ -3,6 +3,9 @@
  */
 package games
 
+import java.text.MessageFormat
+import java.util.*
+
 
 // Think about generalizing this to a game class and dropping in a tictactoe variant of it.
 // Maybe create the players after the game and board is created. The game wouldn't be playable
@@ -13,7 +16,6 @@ class TicTacToe(
         val player2: Player = ComputerPlayer(name = "Paul", id = 2, CompositeStrategy(listOf
         (Offensive(), Defensive())))
 ) {
-    private val greeting = "Welcome to the Tic Tac Toe game!"
     internal val board = Board()
     private val displayer = TextDisplayer()
     private var winner:Player? = null
@@ -30,7 +32,12 @@ class TicTacToe(
 
     //
     fun playGame(moveHistory: MutableList<MoveCommand>) {
-        println(greeting) /// greeting
+        val rb = ResourceBundle.getBundle("tic_tac_toe")
+        println(rb.getString("welcomeMessage"))
+        val interval = rb.getString("intervalWeek")
+        val offer = MessageFormat.format(rb.getString("subOffer"), 12.99, interval)
+        println(offer)
+
         printBoard()
         var curPlayer = player1
         while(moveHistory.size != 9) {
